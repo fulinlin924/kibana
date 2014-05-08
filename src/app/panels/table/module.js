@@ -45,6 +45,10 @@ function (angular, app, _, kbn, moment) {
         {
           title:'Queries',
           src: 'app/partials/querySelect.html'
+        },
+        {
+          title:'Association',
+          src: 'app/panels/table/association.html'
         }
       ],
       status: "Stable",
@@ -269,6 +273,45 @@ function (angular, app, _, kbn, moment) {
       }
     };
 
+    $scope.tablenames = dashboard.get_names();
+    $scope.add = function(query) {    
+      $scope.tablenames = dashboard.get_names();
+      filterSrv.set({
+        editing   : false,
+        type      : 'templatestring',
+        query     : query || '*',
+        mandate   : 'must',
+        owner     : $scope.panel.title,
+        x         : ""
+      },undefined,true);
+    };
+
+    $scope.add_filter = function(row) {
+      var i = filterSrv.ids.length;
+      while (i--) {
+        if (filterSrv.list[filterSrv.ids[i]].type === "querystring" && filterSrv.list[filterSrv.ids[i]].owner === $scope.panel.title) {
+          filterSrv.remove(i);
+        }
+      }
+
+      _.each(_.filter(filterSrv.ids, function(id) {
+        return filterSrv.list[id].owner !== undefined && filterSrv.list[id].owner.toUpperCase() === $scope.panel.title.toUpperCase();
+      }), function(i1) {
+        filterSrv.set({
+          type: 'querystring',
+          query: filterSrv.list[i1].query.replace(/%.+?%/g, function (match) { return row.kibana._source[match.replace(/%/g,'')];}),
+          owner: $scope.panel.title,
+          x: filterSrv.list[i1].x
+        });
+      });
+    };
+    
+    $scope.getLinkQueries = function() {
+      return _.filter(filterSrv.ids,function(id){
+        return filterSrv.list[id].type === "templatestring" && filterSrv.list[id].owner === $scope.panel.title;
+      });
+    };
+
     $scope.toggle_details = function(row) {
       row.kibana.details = row.kibana.details ? false : true;
       row.kibana.view = row.kibana.view || 'table';
@@ -336,10 +379,20 @@ function (angular, app, _, kbn, moment) {
         boolQuery = boolQuery.should(querySrv.toEjsObj(q));
       });
 
+      var lessFilters = _.filter(filterSrv.ids, function(id) {
+        return !_.contains(["templatestring"],filterSrv.list[id].type) && filterSrv.list[id].x!==undefined && filterSrv.list[id].x.toUpperCase()===$scope.panel.title.toUpperCase();
+      });
+      if( lessFilters.length == 0 ){
+        lessFilters = _.filter(filterSrv.ids, function(id) {
+          return filterSrv.list[id].type!=="templatestring" && 
+            ( filterSrv.list[id].owner===undefined || filterSrv.list[id].owner.toUpperCase()!==$scope.panel.title.toUpperCase() );
+        });
+      }
+
       request = request.query(
         $scope.ejs.FilteredQuery(
           boolQuery,
-          filterSrv.getBoolFilter(filterSrv.ids())
+          filterSrv.getBoolFilter(lessFilters)
         ))
         .highlight(
           $scope.ejs.Highlight($scope.panel.highlight)
