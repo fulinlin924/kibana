@@ -351,6 +351,10 @@ function (angular, $, kbn, _, config, moment, Modernizr) {
       });
     };
 
+    this.get_names = function() {
+      return ["SHARED CLOUD",self.current.rows[1].panels[0].title];
+    };
+
     this.elasticsearch_load = function(type,id) {
       var successcb = function(data) {
         var response = renderTemplate(angular.fromJson(data)._source.dashboard, $routeParams);
