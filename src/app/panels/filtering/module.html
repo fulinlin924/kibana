@@ -33,10 +33,10 @@
   </style>
 
   <div class='filtering-container'>
-    <span ng-show="dashboard.current.services.filter.ids.length == 0">
+    <span ng-show="get_filter_id().length == 0">
       <h5>No filters available</h5>
     </span>
-    <div ng-repeat="id in dashboard.current.services.filter.ids" class="small filter-panel-filter">
+    <div ng-repeat="id in get_filter_id()" class="small filter-panel-filter">
       <div>
         <strong>{{dashboard.current.services.filter.list[id].type}}</strong>
         <span ng-show="!dashboard.current.services.filter.list[id].editing && isEditable(dashboard.current.services.filter.list[id])" class="filter-mandate" ng-click="dashboard.current.services.filter.list[id].editing = true">

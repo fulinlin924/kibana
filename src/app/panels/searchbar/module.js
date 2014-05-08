@@ -3,8 +3,7 @@ define([
     'app',
     'lodash',
     'kbn',
-    'moment',
-    'css!./query.css'
+    'moment'
   ],
   function(angular, app, _, kbn, moment) {
     'use strict';
@@ -26,7 +25,7 @@ define([
 
       $scope.get_data = function() {
         $scope.searchText = "";
-        _.each(_.filter(filterSrv.list, function(filter) {
+        _.each(_.filter(filterSrv.list(), function(filter) {
           return (filter.owner === undefined || filter.owner === "searchbar") && _.contains(['field', 'querystring'], filter.type);
         }), function(filter) {
           if (filter.type === "field" && filter.mandate === 'must') {
@@ -44,10 +43,10 @@ define([
       };
 
       $scope.search = function() {
-        var i = filterSrv.ids.length;
+        var i = filterSrv.ids().length;
         while (i--) {
-          if (!_.contains(['time', 'templatestring'], filterSrv.list[i].type)) {
-            if (filterSrv.list[i].mandate === 'must') {
+          if (!_.contains(['time', 'templatestring'], filterSrv.list()[i].type)) {
+            if (filterSrv.list()[i].mandate === 'must') {
               filterSrv.remove(i);
             }
           }

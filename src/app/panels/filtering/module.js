@@ -16,8 +16,8 @@ function (angular, app, _) {
 
   module.controller('filtering', function($scope, filterSrv, $rootScope, dashboard) {
     $scope.get_filter_id = function() {
-      return _.filter(filterSrv.ids,function(id){
-        return filterSrv.list[id].owner === undefined && filterSrv.list[id].owner !== "searchbar" && !_.contains(['templatestring'],filterSrv.list[id].type);
+      return _.filter(filterSrv.ids(),function(id){
+        return filterSrv.list()[id].owner === undefined && filterSrv.list()[id].owner !== "searchbar" && !_.contains(['templatestring'],filterSrv.list()[id].type);
       });
     };
 

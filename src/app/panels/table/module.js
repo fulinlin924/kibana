@@ -287,28 +287,28 @@ function (angular, app, _, kbn, moment) {
     };
 
     $scope.add_filter = function(row) {
-      var i = filterSrv.ids.length;
+      var i = filterSrv.ids().length;
       while (i--) {
-        if (filterSrv.list[filterSrv.ids[i]].type === "querystring" && filterSrv.list[filterSrv.ids[i]].owner === $scope.panel.title) {
+        if (filterSrv.list()[filterSrv.ids()[i]].type === "querystring" && filterSrv.list()[filterSrv.ids()[i]].owner === $scope.panel.title) {
           filterSrv.remove(i);
         }
       }
 
-      _.each(_.filter(filterSrv.ids, function(id) {
-        return filterSrv.list[id].owner !== undefined && filterSrv.list[id].owner.toUpperCase() === $scope.panel.title.toUpperCase();
+      _.each(_.filter(filterSrv.ids(), function(id) {
+        return filterSrv.list()[id].owner !== undefined && filterSrv.list()[id].owner.toUpperCase() === $scope.panel.title.toUpperCase();
       }), function(i1) {
         filterSrv.set({
           type: 'querystring',
-          query: filterSrv.list[i1].query.replace(/%.+?%/g, function (match) { return row.kibana._source[match.replace(/%/g,'')];}),
+          query: filterSrv.list()[i1].query.replace(/%.+?%/g, function (match) { return row.kibana._source[match.replace(/%/g,'')];}),
           owner: $scope.panel.title,
-          x: filterSrv.list[i1].x
+          x: filterSrv.list()[i1].x
         });
       });
     };
     
     $scope.getLinkQueries = function() {
       return _.filter(filterSrv.ids,function(id){
-        return filterSrv.list[id].type === "templatestring" && filterSrv.list[id].owner === $scope.panel.title;
+        return filterSrv.list()[id].type === "templatestring" && filterSrv.list()[id].owner === $scope.panel.title;
       });
     };
 
@@ -379,13 +379,13 @@ function (angular, app, _, kbn, moment) {
         boolQuery = boolQuery.should(querySrv.toEjsObj(q));
       });
 
-      var lessFilters = _.filter(filterSrv.ids, function(id) {
-        return !_.contains(["templatestring"],filterSrv.list[id].type) && filterSrv.list[id].x!==undefined && filterSrv.list[id].x.toUpperCase()===$scope.panel.title.toUpperCase();
+      var lessFilters = _.filter(filterSrv.ids(), function(id) {
+        return !_.contains(["templatestring"],filterSrv.list()[id].type) && filterSrv.list()[id].x!==undefined && filterSrv.list()[id].x.toUpperCase()===$scope.panel.title.toUpperCase();
       });
       if( lessFilters.length == 0 ){
-        lessFilters = _.filter(filterSrv.ids, function(id) {
-          return filterSrv.list[id].type!=="templatestring" && 
-            ( filterSrv.list[id].owner===undefined || filterSrv.list[id].owner.toUpperCase()!==$scope.panel.title.toUpperCase() );
+        lessFilters = _.filter(filterSrv.ids(), function(id) {
+          return filterSrv.list()[id].type!=="templatestring" && 
+            ( filterSrv.list()[id].owner===undefined || filterSrv.list()[id].owner.toUpperCase()!==$scope.panel.title.toUpperCase() );
         });
       }
 
