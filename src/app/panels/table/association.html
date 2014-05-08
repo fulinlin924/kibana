@@ -1,0 +1,23 @@
+  <div class="editor-row">
+    <div class="section">
+      <div ng-repeat="id in getLinkQueries()" class="small filter-panel-filter">
+        <div>
+          <i class="filter-action pointer icon-remove" bs-tooltip="'Remove'" ng-click="filterSrv.remove(id)"></i>
+        </div>
+        <ul class="unstyled">
+          <li>
+            <strong>query</strong> : <input type='text' ng-model="filterSrv.list[id].query">
+          </li>
+          <li>   
+            <input type='text' ng-model="filterSrv.list[id].x">
+          </li>
+<!--      
+          <li>
+            <select ng-model="filterSrv.list[id].x" ng-options="tablename for tablename in tablenames"></select>
+          </li> 
+        -->
+      </ul>
+    </div>
+    <i class="pointer icon-plus-sign" ng-click="add()" bs-tooltip="'Add a query filter'" data-placement="right"></i>
+  </div>
+</div>
