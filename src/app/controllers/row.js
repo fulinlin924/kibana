@@ -8,7 +8,7 @@ function (angular, app, _) {
 
   var module = angular.module('kibana.controllers');
 
-  module.controller('RowCtrl', function($scope, $rootScope, $timeout,ejsResource, querySrv) {
+  module.controller('RowCtrl', function($scope, $rootScope, $timeout,ejsResource, querySrv, filterSrv) {
       var _d = {
         title: "Row",
         height: "150px",
@@ -23,6 +23,7 @@ function (angular, app, _) {
 
       $scope.init = function() {
         $scope.querySrv = querySrv;
+        $scope.filterSrv = filterSrv;
         $scope.reset_panel();
       };
 
