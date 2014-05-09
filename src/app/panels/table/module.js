@@ -306,8 +306,8 @@ function (angular, app, _, kbn, moment) {
       });
     };
     
-    $scope.getLinkQueries = function() {
-      return _.filter(filterSrv.ids,function(id){
+    $scope.get_template_ids = function() {
+      return _.filter(filterSrv.ids(),function(id){
         return filterSrv.list()[id].type === "templatestring" && filterSrv.list()[id].owner === $scope.panel.title;
       });
     };
