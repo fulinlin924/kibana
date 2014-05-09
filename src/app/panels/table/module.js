@@ -383,6 +383,7 @@ function (angular, app, _, kbn, moment) {
         return !_.contains(["templatestring"],filterSrv.list()[id].type) && filterSrv.list()[id].x!==undefined && filterSrv.list()[id].x.toUpperCase()===$scope.panel.title.toUpperCase();
       });
       if( lessFilters.length != 0 ){
+        // add time filter
         lessFilters = lessFilters.concat(_.filter(filterSrv.ids(), function(id) { return filterSrv.list()[id].type==="time"; }));
       } else {
         lessFilters = _.filter(filterSrv.ids(), function(id) {
@@ -523,6 +524,36 @@ function (angular, app, _, kbn, moment) {
 
 
   });
+
+  module.directive('sglclick', ['$parse',
+    function($parse) {
+      return {
+        restrict: 'A',
+        link: function(scope, element, attr) {
+          var fn = $parse(attr['sglclick']);
+          var delay = 300,
+            clicks = 0,
+            timer = null;
+          element.on('click', function(event) {
+            clicks++; //count clicks
+            if (clicks === 1) {
+              timer = setTimeout(function() {
+                scope.$apply(function() {
+                  fn(scope, {
+                    $event: event
+                  });
+                });
+                clicks = 0; //after action performed, reset counter
+              }, delay);
+            } else {
+              clearTimeout(timer); //prevent single-click action
+              clicks = 0; //after action performed, reset counter
+            }
+          });
+        }
+      };
+    }
+  ]);
 
   // This also escapes some xml sequences
   module.filter('tableHighlight', function() {
