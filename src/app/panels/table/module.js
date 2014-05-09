@@ -382,7 +382,9 @@ function (angular, app, _, kbn, moment) {
       var lessFilters = _.filter(filterSrv.ids(), function(id) {
         return !_.contains(["templatestring"],filterSrv.list()[id].type) && filterSrv.list()[id].x!==undefined && filterSrv.list()[id].x.toUpperCase()===$scope.panel.title.toUpperCase();
       });
-      if( lessFilters.length == 0 ){
+      if( lessFilters.length != 0 ){
+        lessFilters = lessFilters.concat(_.filter(filterSrv.ids(), function(id) { return filterSrv.list()[id].type==="time"; }));
+      } else {
         lessFilters = _.filter(filterSrv.ids(), function(id) {
           return filterSrv.list()[id].type!=="templatestring" && 
             ( filterSrv.list()[id].owner===undefined || filterSrv.list()[id].owner.toUpperCase()!==$scope.panel.title.toUpperCase() );
