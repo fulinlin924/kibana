@@ -52,6 +52,11 @@
       padding: 10px;
       border: 1px solid #666;
     }
+
+    .table-hover > tbody > tr.selected > td,
+    .table-hover > tbody > tr.selected:hover > td {
+      background-color: rgb(150, 150, 150);
+    } 
   </style>
 
   <div class="table-container">
@@ -144,7 +149,7 @@
 
           </thead>
           <tbody bindonce ng-repeat="event in data| slice:panel.offset:panel.offset+panel.size" ng-class-odd="'odd'">
-            <tr sglclick="add_filter(event)" ng-dblclick="toggle_details(event)" class="pointer">
+            <tr sglclick="add_filter(event)" ng-dblclick="toggle_details(event)" class="pointer" ng-class="{selected: event._id === selectedID}">
               <td ng-if="panel.fields.length<1" bo-text="event._source|stringify|tableTruncate:panel.trimFactor:1"></td>
               <td ng-show="panel.fields.length>0" ng-repeat="field in panel.fields">
                 <span ng-if="!panel.localTime || panel.timeField != field" bo-html="(event.kibana.highlight[field]||event.kibana._source[field]) |tableHighlight | tableTruncate:panel.trimFactor:panel.fields.length" class="table-field-value"></span>
