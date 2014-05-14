@@ -11,7 +11,7 @@ define([
     var module = angular.module('kibana.panels.searchbar', []);
     app.useModule(module);
 
-    module.controller('searchbar', function($rootScope, $scope, $modal, $q, $compile, fields, querySrv, dashboard, filterSrv) {
+    module.controller('searchbar', function($rootScope, $scope, $modal, $q, $compile, fields, querySrv, dashboard, filterSrv, $timeout) {
 
       $scope.panelMeta = {};
 
@@ -47,7 +47,7 @@ define([
         while (i--) {
           if (!_.contains(['time', 'templatestring'], filterSrv.list()[i].type)) {
             if (filterSrv.list()[i].mandate === 'must') {
-              filterSrv.remove(i);
+              filterSrv.remove(i,true);
             }
           }
         }
@@ -57,8 +57,12 @@ define([
             query: $scope.searchText.trim(),
             mandate: 'must',
             owner: "searchbar"
-          });
+          },undefined,true);
         }
+        
+        $timeout(function(){
+          dashboard.refresh();
+        },0);          
       }
     });
   });
