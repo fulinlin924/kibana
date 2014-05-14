@@ -286,11 +286,44 @@ function (angular, app, _, kbn, moment) {
       },undefined,true);
     };
 
+    $scope.selectedID = null;
+    $scope._selectedUUID = null;    
+    $scope.setSelected = function (id, uuid) {
+       $scope.selectedID = id;
+       $scope._selectedUUID = uuid;
+    };
+    $scope.cleanSelected = function () {
+       $scope.selectedID = undefined;
+    };
+    
+    $scope.guid = (function() {
+      function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000)
+                   .toString(16)
+                   .substring(1);
+      }
+      return function() {
+        return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+               s4() + '-' + s4() + s4() + s4();
+      };
+    })();
+
+    $scope.max = function(){
+      var max = 0;
+      _.each(filterSrv.ids(), function(id){ 
+        max = _.max([filterSrv.list()[id].uuid, max]);
+      });
+      return max;
+    };
+
     $scope.add_filter = function(row) {
+      var uuid = 1+$scope.max();
+      $scope.setSelected(row._id, uuid);
+
       var i = filterSrv.ids().length;
       while (i--) {
         if (filterSrv.list()[filterSrv.ids()[i]].type === "querystring" && filterSrv.list()[filterSrv.ids()[i]].owner === $scope.panel.title) {
-          filterSrv.remove(i);
+          filterSrv.remove(i,true);
         }
       }
 
@@ -301,11 +334,16 @@ function (angular, app, _, kbn, moment) {
           type: 'querystring',
           query: filterSrv.list()[i1].query.replace(/%.+?%/g, function (match) { return row.kibana._source[match.replace(/%/g,'')];}),
           owner: $scope.panel.title,
-          x: filterSrv.list()[i1].x
-        });
+          x: filterSrv.list()[i1].x,
+          uuid: uuid
+        },undefined,true);
       });
+
+      $timeout(function(){
+        dashboard.refresh();
+      },0);      
     };
-    
+
     $scope.get_template_ids = function() {
       return _.filter(filterSrv.ids(),function(id){
         return filterSrv.list()[id].type === "templatestring" && filterSrv.list()[id].owner === $scope.panel.title;
@@ -343,6 +381,12 @@ function (angular, app, _, kbn, moment) {
     };
 
     $scope.get_data = function(segment,query_id) {
+      if( $scope.max() === undefined || $scope.max() !== $scope._selectedUUID ){
+        $scope.cleanSelected();
+      } else {
+        return;
+      }
+
       var
         _segment,
         request,
