@@ -123,7 +123,12 @@ function (angular, $, _, appLevelRequire) {
     angular
       .element(document)
       .ready(function() {
-        $("#"+document.URL.toString().substring(document.URL.toString().lastIndexOf("/dashboard/")+11)).addClass('active');
+        var pageName = "Overview";
+        if( document.URL.toString().lastIndexOf("/dashboard/") != -1){
+          pageName = document.URL.toString().substring(document.URL.toString().lastIndexOf("/dashboard/")+11);
+        }
+        $("#"+pageName).addClass('active');
+
         $(".list-group-item").click(function() {
           $(".list-group-item").removeClass('active');
           $(this).addClass('active');

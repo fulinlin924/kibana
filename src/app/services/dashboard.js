@@ -95,7 +95,11 @@ function (angular, $, kbn, _, config, moment, Modernizr) {
     });
 
     var route = function() {
-      self.elasticsearch_load('dashboard','page_'+$routeParams.kbnId);
+      if($routeParams.kbnId==""){
+        self.elasticsearch_load('dashboard','page_Overview');
+      } else {
+        self.elasticsearch_load('dashboard','page_'+$routeParams.kbnId);
+      }
 
       // // Is there a dashboard type and id in the URL?
       // if(!(_.isUndefined($routeParams.kbnType)) && !(_.isUndefined($routeParams.kbnId))) {
