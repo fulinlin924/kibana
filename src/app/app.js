@@ -123,6 +123,12 @@ function (angular, $, _, appLevelRequire) {
     angular
       .element(document)
       .ready(function() {
+        $("#"+document.URL.toString().substring(document.URL.toString().lastIndexOf("/dashboard/")+11)).addClass('active');
+        $(".list-group-item").click(function() {
+          $(".list-group-item").removeClass('active');
+          $(this).addClass('active');
+        });
+
         $('html').attr('ng-controller', 'DashCtrl');
         angular.bootstrap(document, apps_deps)
           .invoke(['$rootScope', function ($rootScope) {
