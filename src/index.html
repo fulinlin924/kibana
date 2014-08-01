@@ -2,29 +2,28 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
 
     <title>Insights{{dashboard.current.title ? " - "+dashboard.current.title.substring(dashboard.current.title.indexOf('_')+1) : ""}}</title>
 
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/bootstrap.light.min.css" title="Light">
     <link rel="stylesheet" href="css/timepicker.css">
     <link rel="stylesheet" href="css/animate.min.css">
     <link rel="stylesheet" href="css/normalize.min.css">
-    <link rel="stylesheet" href="css/dashboard.css">
-    <link rel="stylesheet" href="css/offcanvas.css">
-
     <script src="vendor/require/require.js"></script>
     <script src="app/components/require.config.js"></script>
     <script>require(['app'], function () {})</script>
+
+    <link rel="stylesheet" href="css/insights.css">
   </head>
 
-  <body style="background: #fff;">
-    <link rel="stylesheet" ng-href="css/bootstrap.{{dashboard.current.style||'light'}}.min.css">
+  <body style="background: #FFF;">
+    <noscript>
+      <div class="container">
+        <center><h3>You must enable javascript to use Kibana</h3></center>
+      </div>
+    </noscript>
+    <!--<link rel="stylesheet" ng-href="css/bootstrap.{{dashboard.current.style||'dark'}}.min.css">-->
+    <link rel="stylesheet" ng-href="css/bootstrap.{{dashboard.current.style||'dark'}}.min.css">
     <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
     <link rel="stylesheet" href="css/font-awesome.min.css">
 
