@@ -114,7 +114,6 @@
           <kibana-simple-panel type="'{{facetType}}'" panel='{{facetPanel}}' ng-cloak></kibana-simple-panel>
         </div>
 
-        <i class="pull-left icon-chevron-sign-right pointer" ng-click="panel.field_list = !panel.field_list" bs-tooltip="'Show field list'" ng-show="!panel.field_list"></i>
         <div class="row-fluid" ng-show="panel.paging">
           <div class="span1 offset1" style="text-align:right">
             <i ng-click="panel.offset = 0" ng-show="panel.offset > 0" class='icon-circle-arrow-left pointer'></i>
@@ -132,19 +131,16 @@
           <thead ng-show="panel.header">
             <th ng-show="panel.fields.length<1">_source (select columns from the list to the left)</th>
             <th style="white-space:nowrap" ng-repeat="field in panel.fields">
-              <i ng-show="!$first" class="pointer link icon-caret-left" ng-click="_.move(panel.fields,$index,$index-1)"></i>
-
               <span  class="pointer" ng-click="set_sort(field)" ng-show='panel.sortable'>
                 {{field}}
                 <i ng-show='field == panel.sort[0]' class="pointer link" ng-class="{'icon-chevron-up': panel.sort[1] == 'asc','icon-chevron-down': panel.sort[1] == 'desc'}"></i>
               </span>
               <span ng-show='!panel.sortable'>{{field}}</span>
-              <i ng-show="!$last" class="pointer link icon-caret-right" ng-click="_.move(panel.fields,$index,$index+1)"></i>
             </th>
 
           </thead>
           <tbody bindonce ng-repeat="event in data| slice:panel.offset:panel.offset+panel.size" ng-class-odd="'odd'">
-            <tr ng-click="toggle_details(event)" class="pointer">
+            <tr>
               <td ng-if="panel.fields.length<1" bo-text="event._source|stringify|tableTruncate:panel.trimFactor:1"></td>
               <td ng-show="panel.fields.length>0" ng-repeat="field in panel.fields">
                 <span ng-if="!panel.localTime || panel.timeField != field" bo-html="(event.kibana.highlight[field]||event.kibana._source[field]) |tableHighlight | tableTruncate:panel.trimFactor:panel.fields.length" class="table-field-value"></span>
