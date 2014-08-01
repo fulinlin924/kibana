@@ -72,17 +72,11 @@ function (angular, $, _, appLevelRequire) {
   app.config(function ($routeProvider, $controllerProvider, $compileProvider, $filterProvider, $provide) {
 
     $routeProvider
-      .when('/dashboard', {
-        templateUrl: 'app/partials/dashboard.html',
-      })
-      .when('/dashboard/:kbnType/:kbnId', {
-        templateUrl: 'app/partials/dashboard.html',
-      })
-      .when('/dashboard/:kbnType/:kbnId/:params', {
-        templateUrl: 'app/partials/dashboard.html'
+      .when('/dashboard/:kbnId', {
+        templateUrl: 'app/partials/rowpanel.html'
       })
       .otherwise({
-        redirectTo: 'dashboard'
+        redirectTo: 'dashboard/Overview'
       });
 
     // this is how the internet told me to dynamically add modules :/

@@ -95,50 +95,52 @@ function (angular, $, kbn, _, config, moment, Modernizr) {
     });
 
     var route = function() {
-      // Is there a dashboard type and id in the URL?
-      if(!(_.isUndefined($routeParams.kbnType)) && !(_.isUndefined($routeParams.kbnId))) {
-        var _type = $routeParams.kbnType;
-        var _id = $routeParams.kbnId;
+      self.elasticsearch_load('dashboard','page_'+$routeParams.kbnId);
 
-        switch(_type) {
-        case ('elasticsearch'):
-          self.elasticsearch_load('dashboard',_id);
-          break;
-        case ('temp'):
-          self.elasticsearch_load('temp',_id);
-          break;
-        case ('file'):
-          self.file_load(_id);
-          break;
-        case('script'):
-          self.script_load(_id);
-          break;
-        case('local'):
-          self.local_load();
-          break;
-        default:
-          $location.path(config.default_route);
-        }
-      // No dashboard in the URL
-      } else {
-        // Check if browser supports localstorage, and if there's an old dashboard. If there is,
-        // inform the user that they should save their dashboard to Elasticsearch and then set that
-        // as their default
-        if (Modernizr.localstorage) {
-          if(!(_.isUndefined(window.localStorage['dashboard'])) && window.localStorage['dashboard'] !== '') {
-            $location.path(config.default_route);
-            alertSrv.set('Saving to browser storage has been replaced',' with saving to Elasticsearch.'+
-              ' Click <a href="#/dashboard/local/deprecated">here</a> to load your old dashboard anyway.');
-          } else if(!(_.isUndefined(window.localStorage.kibanaDashboardDefault))) {
-            $location.path(window.localStorage.kibanaDashboardDefault);
-          } else {
-            $location.path(config.default_route);
-          }
-        // No? Ok, grab the default route, its all we have now
-        } else {
-          $location.path(config.default_route);
-        }
-      }
+      // // Is there a dashboard type and id in the URL?
+      // if(!(_.isUndefined($routeParams.kbnType)) && !(_.isUndefined($routeParams.kbnId))) {
+      //   var _type = $routeParams.kbnType;
+      //   var _id = $routeParams.kbnId;
+
+      //   switch(_type) {
+      //   case ('elasticsearch'):
+      //     self.elasticsearch_load('dashboard',_id);
+      //     break;
+      //   case ('temp'):
+      //     self.elasticsearch_load('temp',_id);
+      //     break;
+      //   case ('file'):
+      //     self.file_load(_id);
+      //     break;
+      //   case('script'):
+      //     self.script_load(_id);
+      //     break;
+      //   case('local'):
+      //     self.local_load();
+      //     break;
+      //   default:
+      //     $location.path(config.default_route);
+      //   }
+      // // No dashboard in the URL
+      // } else {
+      //   // Check if browser supports localstorage, and if there's an old dashboard. If there is,
+      //   // inform the user that they should save their dashboard to Elasticsearch and then set that
+      //   // as their default
+      //   if (Modernizr.localstorage) {
+      //     if(!(_.isUndefined(window.localStorage['dashboard'])) && window.localStorage['dashboard'] !== '') {
+      //       $location.path(config.default_route);
+      //       alertSrv.set('Saving to browser storage has been replaced',' with saving to Elasticsearch.'+
+      //         ' Click <a href="#/dashboard/local/deprecated">here</a> to load your old dashboard anyway.');
+      //     } else if(!(_.isUndefined(window.localStorage.kibanaDashboardDefault))) {
+      //       $location.path(window.localStorage.kibanaDashboardDefault);
+      //     } else {
+      //       $location.path(config.default_route);
+      //     }
+      //   // No? Ok, grab the default route, its all we have now
+      //   } else {
+      //     $location.path(config.default_route);
+      //   }
+      // }
     };
 
     // Since the dashboard is responsible for index computation, we can compute and assign the indices
