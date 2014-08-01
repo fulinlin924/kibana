@@ -23,34 +23,34 @@ function (angular,$) {
         '<div class="row-fluid panel-extra">' +
           '<div class="panel-extra-container">' +
 
-            '<span class="extra row-button" ng-show="panel.editable != false && panel.removable != false">' +
-              '<span confirm-click="row.panels = _.without(row.panels,panel)" '+
-              'confirmation="Are you sure you want to remove this {{panel.type}} panel?" class="pointer">'+
-              '<i class="icon-remove pointer" bs-tooltip="\'Remove\'"></i></span>'+
-            '</span>' +
+            // '<span class="extra row-button" ng-show="panel.editable != false && panel.removable != false">' +
+            //   '<span confirm-click="row.panels = _.without(row.panels,panel)" '+
+            //   'confirmation="Are you sure you want to remove this {{panel.type}} panel?" class="pointer">'+
+            //   '<i class="icon-remove pointer" bs-tooltip="\'Remove\'"></i></span>'+
+            // '</span>' +
 
-            '<span class="extra row-button" ng-hide="panel.draggable == false">' +
-              '<span class="pointer" bs-tooltip="\'Drag here to move\'"' +
-              'data-drag=true data-jqyoui-options="kbnJqUiDraggableOptions"'+
-              ' jqyoui-draggable="'+
-              '{'+
-                'animate:false,'+
-                'mutate:false,'+
-                'index:{{$index}},'+
-                'onStart:\'panelMoveStart\','+
-                'onStop:\'panelMoveStop\''+
-                '}"  ng-model="row.panels"><i class="icon-move"></i></span>'+
-            '</span>' +
+            // '<span class="extra row-button" ng-hide="panel.draggable == false">' +
+            //   '<span class="pointer" bs-tooltip="\'Drag here to move\'"' +
+            //   'data-drag=true data-jqyoui-options="kbnJqUiDraggableOptions"'+
+            //   ' jqyoui-draggable="'+
+            //   '{'+
+            //     'animate:false,'+
+            //     'mutate:false,'+
+            //     'index:{{$index}},'+
+            //     'onStart:\'panelMoveStart\','+
+            //     'onStop:\'panelMoveStop\''+
+            //     '}"  ng-model="row.panels"><i class="icon-move"></i></span>'+
+            // '</span>' +
 
-            '<span class="row-button extra" ng-show="panel.editable != false">' +
-              '<span config-modal="./app/partials/paneleditor.html" kbn-model="panel" class="pointer">'+
-              '<i class="icon-cog pointer" bs-tooltip="\'Configure\'"></i></span>'+
-            '</span>' +
+            // '<span class="row-button extra" ng-show="panel.editable != false">' +
+            //   '<span config-modal="./app/partials/paneleditor.html" kbn-model="panel" class="pointer">'+
+            //   '<i class="icon-cog pointer" bs-tooltip="\'Configure\'"></i></span>'+
+            // '</span>' +
 
-            '<span class="row-button extra" ng-show="panel.editable != false">' +
-              '<span ng-click="duplicate_panel(panel)" class="pointer">'+
-              '<i class="icon-copy pointer" bs-tooltip="\'Duplicate\'"></i></span>'+
-            '</span>' +
+            // '<span class="row-button extra" ng-show="panel.editable != false">' +
+            //   '<span ng-click="duplicate_panel(panel)" class="pointer">'+
+            //   '<i class="icon-copy pointer" bs-tooltip="\'Duplicate\'"></i></span>'+
+            // '</span>' +
 
             '<span ng-repeat="task in panelMeta.modals" class="row-button extra" ng-show="task.show">' +
               '<span bs-modal="task.partial" class="pointer"><i ' +
