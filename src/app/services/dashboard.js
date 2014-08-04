@@ -95,10 +95,10 @@ function (angular, $, kbn, _, config, moment, Modernizr) {
     });
 
     var route = function() {
-      if($routeParams.kbnId==""){
-        self.elasticsearch_load('dashboard','page_Overview');
+      if( $routeParams.kbnId == "" ){
+        self.elasticsearch_load('dashboard','Insight_Overview');
       } else {
-        self.elasticsearch_load('dashboard','page_'+$routeParams.kbnId);
+        self.elasticsearch_load('dashboard','Insight_'+$routeParams.kbnId);
       }
 
       // // Is there a dashboard type and id in the URL?
