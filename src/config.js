@@ -29,7 +29,7 @@ function (Settings) {
      *  +elasticsearch: {server: "http://localhost:9200", withCredentials: true}+
      *
      */
-    elasticsearch: "http://sj2slu689:9200",
+    elasticsearch: "http://sj1glm661:9200",
 
     /** @scratch /configuration/config.js/5
      *
