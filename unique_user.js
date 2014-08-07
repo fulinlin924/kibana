@@ -3,7 +3,7 @@ var JSON = require('JSON');
 
 function putES(_path,data){
   var put_data = JSON.stringify(data);
-  console.log(put_data);
+  // console.log(put_data);
 
   var put_options = {
       host: _host,
@@ -28,14 +28,14 @@ function putES(_path,data){
 }
 
 
-function postES (_sourcePath,_sourceType,_sourceField,_targetPath,_getTargetDataFun) {
+function postES (_sourcePath,_sourceQuery,_sourceDate,_sourceField,_targetPath,_getTargetDataFun) {
   var post_data = 
   '{ \
     "query": { \
         "filtered": { \
           "query": { \
             "query_string": { \
-              "query": "_type:'+_sourceType+'" \
+              "query": "'+_sourceQuery+'" \
             } \
           }, \
           "filter": { \
@@ -43,7 +43,7 @@ function postES (_sourcePath,_sourceType,_sourceField,_targetPath,_getTargetData
               "must": [ \
                 { \
                   "range": { \
-                    "collectDate": { \
+                    "'+_sourceDate+'": { \
                       "from": 1356969600000 \
                     } \
                   } \
@@ -56,7 +56,7 @@ function postES (_sourcePath,_sourceType,_sourceField,_targetPath,_getTargetData
       "aggs":{ \
         "unique_user":{ \
           "date_histogram": { \
-            "field": "collectDate", \
+            "field": "'+_sourceDate+'", \
             "interval": "1M" \
           }, \
           "aggs":{ \
@@ -70,7 +70,7 @@ function postES (_sourcePath,_sourceType,_sourceField,_targetPath,_getTargetData
       } \
     } \
   }'; 
-
+  
   var post_options = {
       host: _host,
       port: _port,
@@ -110,7 +110,8 @@ var _port = 9200;
 
 // ===================================
 var _sourcePath = '/udc/_search?pretty';
-var _sourceType = 'ComponentUsageDataEntity';
+var _sourceQuery = '_type:ComponentUsageDataEntity';
+var _sourceDate = 'collectDate';
 var _sourceField = 'user';
 var _targetPath = '/udc2/ComponentUsageDataEntityMonth/';
 var _get_unique_user = function(entry) {
@@ -125,14 +126,35 @@ var _get_unique_user = function(entry) {
   return _d;
 }
 
-postES(_sourcePath,_sourceType,_sourceField,_targetPath,_get_unique_user);
+postES(_sourcePath,_sourceQuery,_sourceDate,_sourceField,_targetPath,_get_unique_user);
 
 // ===================================
 var _sourcePath = '/udc/_search?pretty';
-var _sourceType = 'CCMAccountEntity';
+var _sourceQuery = '_type:CCMAccountEntity';
+var _sourceDate = 'collectDate';
 var _sourceField = 'ldap';
 var _targetPath = '/udc2/CCMAccountEntityMonth/';
 
-postES(_sourcePath,_sourceType,_sourceField,_targetPath,_get_unique_user);
+postES(_sourcePath,_sourceQuery,_sourceDate,_sourceField,_targetPath,_get_unique_user);
 
 // ===================================
+var _sourcePath = '/subscription_email_trigger/_search?pretty';
+var _sourceQuery = '*';
+var _sourceDate = '@timestamp';
+var _sourceField = 'userId';
+var _targetPath = '/udc2/subscription_email_trigger_Month/';
+var _get_unique_user = function(entry) {
+  var users = [];
+  entry.id.buckets.forEach(function(user) {
+    users.push(user.key);
+  });
+  var _d = {};
+  _d['@timestamp']=entry.key;
+  _d['number']=entry.id.buckets.length;
+  _d['users']=users;
+  return _d;
+}
+postES(_sourcePath,_sourceQuery,_sourceDate,_sourceField,_targetPath,_get_unique_user);
+
+
+
