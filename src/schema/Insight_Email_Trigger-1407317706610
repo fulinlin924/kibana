@@ -1,0 +1,299 @@
+{
+  "title": "Insight_Email_Trigger",
+  "services": {
+    "query": {
+      "list": {
+        "0": {
+          "id": 0,
+          "color": "#B7DBAB",
+          "alias": "Total Email Trigger Requests",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "endpoint:email_trigger"
+        },
+        "1": {
+          "id": 1,
+          "color": "#EAB839",
+          "alias": "Total Requests",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "endpoint:/[a-zA-Z0-9._]+/"
+        },
+        "2": {
+          "id": 2,
+          "color": "#6ED0E0",
+          "alias": "Total Successful Email Trigger Requests",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "endpoint:email_trigger AND priority:INFO"
+        },
+        "3": {
+          "id": 3,
+          "color": "#EF843C",
+          "alias": "Total Failed Email Trigger Requests",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "endpoint:email_trigger AND priority:ERROR"
+        },
+        "4": {
+          "id": 4,
+          "color": "#F4D598",
+          "alias": "Total Other Requests",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "endpoint:subscription"
+        }
+      },
+      "ids": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    "filter": {
+      "list": {
+        "0": {
+          "from": "2014-03-01T00:00:00.000Z",
+          "to": "2014-09-01T00:00:00.000Z",
+          "type": "time",
+          "field": "@timestamp",
+          "mandate": "must",
+          "active": true,
+          "alias": "",
+          "id": 0
+        }
+      },
+      "ids": [
+        0
+      ]
+    }
+  },
+  "rows": [
+    {
+      "title": "Usage",
+      "height": "150px",
+      "editable": true,
+      "collapse": false,
+      "collapsable": true,
+      "panels": [
+        {
+          "span": 12,
+          "editable": true,
+          "type": "histogram",
+          "loadingEditor": false,
+          "mode": "count",
+          "time_field": "@timestamp",
+          "value_field": "usage",
+          "x-axis": true,
+          "y-axis": true,
+          "scale": 1,
+          "y_format": "short",
+          "grid": {
+            "max": null,
+            "min": 0
+          },
+          "queries": {
+            "mode": "selected",
+            "ids": [
+              0,
+              4
+            ]
+          },
+          "annotate": {
+            "enable": false,
+            "query": "*",
+            "size": 20,
+            "field": "_type",
+            "sort": [
+              "_score",
+              "desc"
+            ]
+          },
+          "auto_int": false,
+          "resolution": 100,
+          "interval": "1M",
+          "intervals": [
+            "auto",
+            "1s",
+            "1m",
+            "5m",
+            "10m",
+            "30m",
+            "1h",
+            "3h",
+            "12h",
+            "1d",
+            "1w",
+            "1y"
+          ],
+          "lines": false,
+          "fill": 0,
+          "linewidth": 3,
+          "points": false,
+          "pointradius": 5,
+          "bars": true,
+          "stack": true,
+          "spyable": false,
+          "zoomlinks": false,
+          "options": false,
+          "legend": false,
+          "show_query": true,
+          "interactive": true,
+          "legend_counts": true,
+          "timezone": "browser",
+          "percentage": false,
+          "zerofill": true,
+          "derivative": false,
+          "tooltip": {
+            "value_type": "cumulative",
+            "query_as_alias": true
+          },
+          "title": "TOTAL REQUESTS PER MONTH"
+        }
+      ],
+      "notice": false
+    },
+    {
+      "title": "Subscription Email Trigger Logs",
+      "height": "150px",
+      "editable": true,
+      "collapse": true,
+      "collapsable": true,
+      "panels": [
+        {
+          "error": false,
+          "span": 12,
+          "editable": true,
+          "type": "table",
+          "loadingEditor": false,
+          "size": 100,
+          "pages": 10,
+          "offset": 0,
+          "sort": [
+            "@timestamp",
+            "desc"
+          ],
+          "overflow": "min-height",
+          "fields": [
+            "@timestamp",
+            "priority",
+            "message"
+          ],
+          "highlight": [],
+          "sortable": true,
+          "header": true,
+          "paging": true,
+          "field_list": false,
+          "all_fields": false,
+          "trimFactor": 300,
+          "localTime": false,
+          "timeField": "@timestamp",
+          "spyable": false,
+          "queries": {
+            "mode": "selected",
+            "ids": [
+              1
+            ]
+          },
+          "style": {
+            "font-size": "9pt"
+          },
+          "normTimes": true,
+          "title": "Logs"
+        }
+      ],
+      "notice": false
+    }
+  ],
+  "editable": true,
+  "failover": false,
+  "index": {
+    "interval": "none",
+    "pattern": "[logstash-]YYYY.MM.DD",
+    "default": "subscription_email_trigger",
+    "warm_fields": false
+  },
+  "style": "light",
+  "panel_hints": true,
+  "pulldowns": [
+    {
+      "type": "query",
+      "collapse": false,
+      "notice": false,
+      "enable": true,
+      "query": "*",
+      "pinned": true,
+      "history": [
+        "endpoint:/[a-zA-Z0-9._]+/",
+        "*",
+        "usage:1",
+        "usage =1",
+        "x-user-id"
+      ],
+      "remember": 10
+    },
+    {
+      "type": "filtering",
+      "collapse": true,
+      "notice": true,
+      "enable": true
+    }
+  ],
+  "nav": [
+    {
+      "type": "timepicker",
+      "collapse": false,
+      "notice": false,
+      "enable": true,
+      "status": "Stable",
+      "time_options": [
+        "5m",
+        "15m",
+        "1h",
+        "6h",
+        "12h",
+        "24h",
+        "2d",
+        "7d",
+        "30d"
+      ],
+      "refresh_intervals": [
+        "5s",
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ],
+      "timefield": "@timestamp",
+      "now": false,
+      "filter_id": 0
+    }
+  ],
+  "loader": {
+    "save_gist": false,
+    "save_elasticsearch": true,
+    "save_local": true,
+    "save_default": true,
+    "save_temp": true,
+    "save_temp_ttl_enable": true,
+    "save_temp_ttl": "30d",
+    "load_gist": true,
+    "load_elasticsearch": true,
+    "load_elasticsearch_size": 20,
+    "load_local": true,
+    "hide": false
+  },
+  "refresh": false
+}
